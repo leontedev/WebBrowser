@@ -26,5 +26,5 @@ We're adding an observer on the webView, for the WKWebView.estimatedProgress pro
 Then we override the observeValue function and check if it's for this keyPath, and update the progressView on each estimatedProgress change.
 
 <p align="center">
-    <img src="Screen Shot 2019-08-29 at 11.56.38 AM.png" />
+    <img src="Screen Shot 2019-08-30 at 5.01.41 PM.png" />
 </p>
