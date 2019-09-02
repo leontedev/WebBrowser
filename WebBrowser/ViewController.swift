@@ -13,7 +13,8 @@ class ViewController: UIViewController, WKNavigationDelegate {
     
     var webView: WKWebView!
     var progressView: UIProgressView!
-    var websites = ["apple.com", "google.com", "hackingwithswift.com"]
+    //var websites = ["github.com", "hackingwithswift.com"]
+    var website: String!
     
     override func loadView() {
         webView = WKWebView()
@@ -28,18 +29,21 @@ class ViewController: UIViewController, WKNavigationDelegate {
         
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let refresh = UIBarButtonItem(barButtonSystemItem: .refresh, target: webView, action: #selector(webView.reload))
+        let back = UIBarButtonItem(title: "Back", style: .plain, target: webView, action: #selector(webView.goBack))
+        //let back = UIBarButtonItem(barButtonSystemItem: ., target: webView, action: #selector(webView.goBack))
+        let forward = UIBarButtonItem(title: "Forward", style: .plain, target: webView, action: #selector(webView.goForward))
         
         progressView = UIProgressView(progressViewStyle: .bar)
         progressView.sizeToFit()
         let progressButton = UIBarButtonItem(customView: progressView)
         
-        toolbarItems = [progressButton, spacer, refresh]
+        toolbarItems = [progressButton, spacer, back, forward, refresh]
         navigationController?.isToolbarHidden = false
         
         // KVO
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
         
-        let url = URL(string: "https://" + websites[0])!
+        let url = URL(string: "https://" + website)!
         let request = URLRequest(url: url)
         webView.load(request)
         webView.allowsBackForwardNavigationGestures = true
@@ -76,18 +80,27 @@ class ViewController: UIViewController, WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-
+        
+        var isAllowed = false
         
         if let host = navigationAction.request.url?.host {
             for website in websites {
                 if host.contains(website) {
                     decisionHandler(.allow)
+                    isAllowed = true
                     return
                 }
             }
         }
         
         decisionHandler(.cancel)
+        
+        if !isAllowed {
+            let ac = UIAlertController(title: "Forbidden", message: "The URL is not allowed in this browser", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(ac, animated: true)
+        }
+        
     }
 }
 
