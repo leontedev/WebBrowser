@@ -36,5 +36,5 @@ Then we override the observeValue function and check if it's for this keyPath, a
 3. For more of a challenge, try changing the initial view controller to a table view like in project 1, where users can choose their website from a list rather than just having the first in the array loaded up front.
 
 <p align="center">
-    <img src="Screen Shot 2019-08-30 at 5.01.41 PM.png" />
+    <img src="Screen Shot 2019-09-02 at 4.29.06 PM.png" />
 </p>
